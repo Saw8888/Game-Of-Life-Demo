@@ -11,26 +11,19 @@
 int sizeX = 20;
 int sizeY = 20;
 
-int grid[20][20] = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
-                    {0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+int grid[20][20];
+
+int randRange(int min, int max){
+ return min + (int) (rand() / (double) (RAND_MAX + 1) * (max - min + 1));
+}                 
+
+void fillIn(int grid[sizeX][sizeY], int j, int i){
+	for(j=0;j<sizeX;j++){
+		for(i=0;i<sizeY;i++){
+		 grid[j][i] = randRange(0,1);
+		}
+	}
+}
 
 int count_nbr(int grid[sizeX][sizeY], int x, int y){
  int n_count = 0;
@@ -62,26 +55,28 @@ int count_nbr(int grid[sizeX][sizeY], int x, int y){
 
 int main(void){
  int neighbour_count[sizeX][sizeY];
-    int x,y,iterations;
+ int x,y,iterations,j,i;
+ 
+ fillIn(grid,j,i);
 
  for(iterations=0;iterations<500;iterations++){
   system("cls"); //Clear screen
   for(x=0;x<sizeX;x++){
-    printf("\n");
-    for(y=0;y<sizeY;y++){
-     if(grid[x][y]==1){
-      printf("@");
-             }
+   printf("\n");
+   for(y=0;y<sizeY;y++){
+    if(grid[x][y]==1){
+     printf("@");
+    }
     else{
-      printf(" ");
+     printf(" ");
     }
     neighbour_count[x][y] = count_nbr(grid,x,y);
-         }
+   }
   }
                     
   for(x=0;x<sizeX;x++){
-     for(y=0;y<sizeY;y++){
-        if(neighbour_count[x][y] < 2 || neighbour_count[x][y] > 3)
+   for(y=0;y<sizeY;y++){
+    if(neighbour_count[x][y] < 2 || neighbour_count[x][y] > 3)
      grid[x][y] = 0;
     else if(neighbour_count[x][y] == 3)
      grid[x][y]=1;
